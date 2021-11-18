@@ -103,6 +103,10 @@ stages:
                   record['buildId'] = build_info['id']
                   record['definitionId'] = build_info['definitionId']
                   record['definitionName'] = build_info['definitionName']
+                  record['sourceBranch'] = build_info['sourceBranch']
+                  record['sourceVersion'] = build_info['sourceVersion']
+                  record['triggerInfo'] = build_info['triggerInfo']
+                  record['reason'] = build_info['reason']
                   if record['log']:
                       log_url = record['log']['url']
                       log = get_response(log_url)

@@ -120,9 +120,9 @@ stages:
                       url
                       number
                       assignees (first: 10) {
-                        nodes{
+                        nodes {
                         login
-                      }
+                        }
                       }
                       title
                       createdAt

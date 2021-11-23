@@ -179,7 +179,7 @@ stages:
                 edges = content['data']['search']['edges']
                 for edge in edges:
                   node = edge['node']
-                  node['timestamp'] = timestamp.isoformat()
+                  node['dumpedAt'] = timestamp.isoformat()
                   results.append(json.dumps(node))
                 print("Read edge count: {0}, total count: {1}".format(len(results), content['data']['search']['issueCount']), flush=True)
                 hasNextPage = content['data']['search']['pageInfo']['hasNextPage']

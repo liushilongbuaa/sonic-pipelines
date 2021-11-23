@@ -62,6 +62,9 @@ stages:
           if 'END_TIMESTAMP' in os.environ and os.environ['END_TIMESTAMP']:
             until = parser.isoparse(os.environ['END_TIMESTAMP']).replace(tzinfo=pytz.UTC)
           delta = datetime.timedelta(minutes=60)
+          if 'TIMEDELTA_IN_MINUTES' in os.environ and os.environ['TIMEDELTA_IN_MINUTES']:
+            timedelta_in_minutes = max(int(os.environ['TIMEDELTA_IN_MINUTES']), 30)
+            delta =  datetime.timedelta(minutes=timedelta_in_minutes)
           max_timedelta_in_days = 7
 
           # Upload a list of lines to blob

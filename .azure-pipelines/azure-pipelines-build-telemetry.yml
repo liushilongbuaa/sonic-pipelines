@@ -111,6 +111,12 @@ stages:
                       log_url = record['log']['url']
                       log = get_response(log_url)
                       record['content'] = log
+                  if 'parameters' in build_info:
+                      record['parameters'] = build_info['parameters']
+                  if 'status' in build_info:
+                      record['status'] = build_info['status']
+                  if 'uri' in build_info:
+                      record['uri'] = build_info['uri']
                   results.append(json.dumps(record))
               return results
 

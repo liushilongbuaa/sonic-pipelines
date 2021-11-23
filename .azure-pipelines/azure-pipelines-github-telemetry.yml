@@ -48,7 +48,7 @@ stages:
           import http.client
           from azure.storage.blob import BlobServiceClient
 
-          CONTAINER = 'builds'
+          CONTAINER = 'build'
           INFO_PULLREQUESTS_FILE = "info/pullrequests.json"
           GITHUB_TOKEN = '$(GITHUB_TOKEN)'
           AZURE_STORAGE_CONNECTION_STRING = '$(AZURE_STORAGE_CONNECTION_STRING)'

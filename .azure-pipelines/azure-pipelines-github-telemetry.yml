@@ -104,6 +104,7 @@ stages:
           def get_pullrequests():
             results = []
             start_timestamp = get_start_timestamp()
+            print('')
             query_pattern = '''
             {
               search(query: "org:azure is:pr updated:%s..%s sort:updated", %s type: ISSUE, first: 100) {
@@ -175,7 +176,7 @@ stages:
                 for edge in edges:
                   node = edge['node']
                   node['timestamp'] = timestamp.isoformat()
-                  results.append(node)
+                  results.append(json.dumps(node))
                 print("Read edge count: {0}, total count: {1}".format(len(results), content['data']['search']['issueCount']))
                 hasNextPage = content['data']['search']['pageInfo']['hasNextPage']
                 print(content['data']['search']['pageInfo'])

@@ -135,7 +135,7 @@ stages:
                       baseRepository {name, url, owner{login}}
                       repository {name, url, owner{login}}
                       mergeCommit {id, committedDate}
-                      commits (first: 100) {nodes{commit{oid, message}}}
+                      commits (first: 3) {nodes{commit{oid, message}}}
                       state
                     }
                   }

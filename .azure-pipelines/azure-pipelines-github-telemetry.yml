@@ -167,9 +167,11 @@ stages:
                 body = {}
                 body['query'] = query
                 data = bytes(json.dumps(body), encoding="utf-8")
+                content = {}
                 for i in range(10):
                   try:
                     r = request.urlopen(req, data=data)
+                    content = json.loads(r.read())
                     break
                   except HTTPError as e:
                     print('Try count: {0}, error code: {1}, reason: {2}'.format(i, e.code, e.reason))
@@ -177,7 +179,6 @@ stages:
                   except IncompleteRead as e:
                     print("IncompleteRead", e)
                     time.sleep(3)
-                content = json.loads(r.read())
                 if 'data' not in content:
                   print(content)
                   break

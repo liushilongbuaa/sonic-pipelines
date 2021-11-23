@@ -82,8 +82,8 @@ stages:
               blob_client.upload_blob(data)
             os.remove(local_file_name)
 
-          def get_start_timestamp():
-            if 'START_TIMESTAMP' in os.environ and os.environ['START_TIMESTAMP']:
+          def get_start_timestamp(force=False):
+            if not force and 'START_TIMESTAMP' in os.environ and os.environ['START_TIMESTAMP']:
               return parser.isoparse(os.environ['START_TIMESTAMP']).replace(tzinfo=pytz.UTC)
             blob_client = blob_service_client.get_blob_client(container=CONTAINER, blob=INFO_PULLREQUESTS_FILE)
             try:
@@ -96,6 +96,11 @@ stages:
             return start_timestamp.replace(tzinfo=pytz.UTC)
 
           def update_start_timestamp():
+            if 'END_TIMESTAMP' in os.environ and os.environ['END_TIMESTAMP']:
+              last = get_start_timestamp(True)
+              if last > until:
+                print('skipped update the start timestamp, until:%s < last:%s'.format(until.isoformat(), last.isoformat()))
+                return
             blob_file_name="info/pullrequests.json"
             blob_client = blob_service_client.get_blob_client(container=CONTAINER, blob=INFO_PULLREQUESTS_FILE)
             info = {}

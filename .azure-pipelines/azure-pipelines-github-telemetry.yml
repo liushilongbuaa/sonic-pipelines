@@ -30,13 +30,13 @@ stages:
         addToPath: true
         architecture: 'x64'
     - script: |
-        pip install azure-storage-queue azure-storage-blob
-        pip install --pre gql[all]
+        pip install azure-storage-queue azure-storage-blob pytz python-dateutil
       displayName: Install build tools
     - task: PythonScript@0
       displayName: Publish SONiC telemetry
       env:
         AZURE_STORAGE_CONNECTION_STRING: '$(AZURE_STORAGE_CONNECTION_STRING)'
+        GITHUB_TOKEN: '$(GITHUB_TOKEN)'
       inputs:
         scriptSource: 'inline'
         script: |
@@ -50,6 +50,8 @@ stages:
 
           CONTAINER = 'builds'
           INFO_PULLREQUESTS_FILE = "info/pullrequests.json"
+          GITHUB_TOKEN = '$(GITHUB_TOKEN)'
+          AZURE_STORAGE_CONNECTION_STRING = '$(AZURE_STORAGE_CONNECTION_STRING)'
           blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
 
           url="https://api.github.com/graphql"
@@ -151,7 +153,7 @@ stages:
                 query = query_pattern %(start.isoformat(), end.isoformat(), condition)
                 req = request.Request(url, method="POST")
                 req.add_header('Content-Type', 'application/json')
-                req.add_header('Authorization', "Bearer {0}".format(token))
+                req.add_header('Authorization', "Bearer {0}".format(GITHUB_TOKEN))
                 body = {}
                 body['query'] = query
                 data = bytes(json.dumps(body), encoding="utf-8")

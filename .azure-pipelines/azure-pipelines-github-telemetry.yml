@@ -97,7 +97,7 @@ stages:
             info = {}
             info['timestamp'] = until.isoformat()
             data = json.dumps(info)
-            blob_client.upload_blob(info)
+            blob_client.upload_blob(info, overwrite=True)
 
           # The GitHub Graphql supports to query 100 items per page, and 10 page in max.
           # To workaround it, split the query into several time range "delta", in a time range, need to make sure less than 1000 items.

@@ -104,7 +104,7 @@ stages:
           def get_pullrequests():
             results = []
             start_timestamp = get_start_timestamp()
-            print('')
+            print('start: {0}, until: {1}'.format(start_timestamp.isoformat(), unil.isoformat()))
             query_pattern = '''
             {
               search(query: "org:azure is:pr updated:%s..%s sort:updated", %s type: ISSUE, first: 100) {

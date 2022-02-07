@@ -65,7 +65,7 @@ stages:
           if 'TIMEDELTA_IN_MINUTES' in os.environ and os.environ['TIMEDELTA_IN_MINUTES']:
             timedelta_in_minutes = max(int(os.environ['TIMEDELTA_IN_MINUTES']), 30)
             delta =  datetime.timedelta(minutes=timedelta_in_minutes)
-          max_timedelta_in_days = 7
+          max_timedelta_in_days = 35
 
           # Upload a list of lines to blob
           def upload_to_blob(lines, blob_prefix, file_prefix=""):

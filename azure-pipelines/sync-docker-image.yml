@@ -14,7 +14,6 @@ jobs:
     variables:
       - group: Debian-Mirror-Common
     steps:
-      - template: cleanup.yml
       - checkout: self
         clean: true
       - task: DownloadPipelineArtifact@2

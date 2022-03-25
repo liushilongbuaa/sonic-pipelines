@@ -23,7 +23,7 @@ jobs:
           project: build
           pipeline: Azure.sonic-buildimage.official.vs
           runVersion: 'latestFromBranch'
-          runBranch: 'master'
+          runBranch: 'refs/heads/master'
           path: download
           patterns: |
             **/target/versions/default/versions-docker

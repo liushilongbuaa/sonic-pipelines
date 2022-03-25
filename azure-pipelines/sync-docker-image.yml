@@ -6,6 +6,13 @@ schedules:
     include:
     - main
   always: true
+parameters:
+  - name: platforms
+    type: object
+    default:
+      - vs
+      - centec-arm64
+      - marvell-armhf
 
 jobs:
   - job: Build
@@ -16,17 +23,18 @@ jobs:
     steps:
       - checkout: self
         clean: true
-      - task: DownloadPipelineArtifact@2
-        displayName: Download versions-docker file
-        inputs:
-          source: specific
-          project: build
-          pipeline: Azure.sonic-buildimage.official.vs
-          runVersion: 'latestFromBranch'
-          runBranch: 'refs/heads/master'
-          path: download
-          patterns: |
-            **/target/versions/default/versions-docker
+      ${{ each platform in parameters.platforms }}
+        - task: DownloadPipelineArtifact@2
+          displayName: Download versions-docker file
+          inputs:
+            source: specific
+            project: build
+            pipeline: Azure.sonic-buildimage.official.${{ platform }}
+            runVersion: 'latestFromBranch'
+            runBranch: 'refs/heads/master'
+            path: download
+            patterns: |
+              **/target/versions/default/versions-docker
       - script: |
           set -ex
           az login -u $(ApplicationId) --service-principal --tenant $(AzureTenant) -p "$ApplicationKey"

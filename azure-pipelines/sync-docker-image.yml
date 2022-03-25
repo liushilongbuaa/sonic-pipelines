@@ -46,5 +46,6 @@ jobs:
             fi
             az acr import -n PublicMirror --source docker.io/$i --image $i --force
           done
+        displayName: push image to PublicMirror
         env:
           ApplicationKey: '$(ApplicationKey)'

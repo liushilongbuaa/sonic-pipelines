@@ -25,7 +25,7 @@ jobs:
         clean: true
       - ${{ each platform in parameters.platforms }}:
         - task: DownloadPipelineArtifact@2
-          displayName: Download versions-docker file
+          displayName: Download ${{ platform }} versions-docker file
           inputs:
             source: specific
             project: build

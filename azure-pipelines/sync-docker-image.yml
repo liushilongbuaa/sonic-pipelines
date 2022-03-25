@@ -1,0 +1,40 @@
+trigger: none
+pr: none
+schedules:
+- cron: "0 0 * * *"
+  branches:
+    include:
+    - main
+  always: true
+
+jobs:
+  - job: Build
+    pool: sonic-mirror-westus2-2
+    timeoutInMinutes: 20
+    variables:
+      - group: Debian-Mirror-Common
+    steps:
+      - template: cleanup.yml
+      - checkout: self
+        clean: true
+      - task: DownloadPipelineArtifact@2
+        displayName: Download versions-docker file
+        inputs:
+          source: specific
+          project: build
+          pipeline: Azure.sonic-buildimage.official.vs
+          runVersion: 'latestFromBranch'
+          runBranch: 'master'
+          path: download
+          patterns: |
+            **/target/versions/default/versions-docker
+      - script: |
+          set -ex
+          az login -u $(ApplicationId) --service-principal --tenant $(AzureTenant) -p "$ApplicationKey"
+          images=$(find download -name versions-docker | xargs -i grep -v "==$" {} | awk -F== '{print$1}' | sed -e "s/amd64://" -e "s/arm64://" -e "s/armhf://" | sort -u )
+          for i in $images
+          do
+            az acr import -n PublicMirror --source docker.io/$i --image $i --force || az acr import -n PublicMirror --source docker.io/library/$i --image $i --force
+          done
+        env:
+          ApplicationKey: '$(ApplicationKey)'

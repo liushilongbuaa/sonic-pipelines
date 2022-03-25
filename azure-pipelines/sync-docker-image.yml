@@ -41,7 +41,10 @@ jobs:
           images=$(find download -name versions-docker | xargs -i grep -v "==$" {} | awk -F== '{print$1}' | sed -e "s/amd64://" -e "s/arm64://" -e "s/armhf://" | sort -u )
           for i in $images
           do
-            az acr import -n PublicMirror --source docker.io/$i --image $i --force || az acr import -n PublicMirror --source docker.io/library/$i --image $i --force
+            if [[ "$i" == debian* ]];then
+              i=library/$i
+            fi
+            az acr import -n PublicMirror --source docker.io/$i --image $i --force
           done
         env:
           ApplicationKey: '$(ApplicationKey)'

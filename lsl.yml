@@ -1,0 +1,16 @@
+trigger: none
+pr: none
+
+stages:
+- stage: A
+  continueOnError: true
+  jobs:
+  - job:
+    steps:
+    - bash: exit 1
+- stage: B
+  condition: success()
+  jobs:
+  - job:
+    steps:
+    - bash: echo HHHH

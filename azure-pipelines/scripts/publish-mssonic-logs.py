@@ -121,6 +121,7 @@ def main():
     max_messages = 30
 
     count = queue_client.get_queue_properties().approximate_message_count
+    print(f'Totle msg count: {count}')
     for page in range(0,int(count/max_messages)+1):
         messages = queue_client.receive_messages(messages_per_page=1, visibility_timeout=3600, max_messages=max_messages)
         build_messages = []
@@ -132,6 +133,7 @@ def main():
             msgs.append(msg)
             msg_content = base64.b64decode(msg.content)
             build = json.loads(msg_content)
+            print(f'msg ID: {build["id"]}')
             content = json.dumps(build, separators=(',', ':'))
             build_messages.append(content)
             build_url = build['resource']['url']
@@ -151,6 +153,7 @@ def main():
             logs = get_build_logs(timeline_url, build_info)
             build_logs += logs
             build_coverages += get_coverage(build_info)
+        print('-------------------------------------------------')
 
         database = 'build'
         if os.getenv('AZURE_STORAGE_DATABASE'):
@@ -162,6 +165,7 @@ def main():
         for msg in msgs:
             print(f'deleting message: {msg.id}')
             queue_client.delete_message(msg)
+        print('=================================================')
 
 if __name__ == '__main__':
     main()

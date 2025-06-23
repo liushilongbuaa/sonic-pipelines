@@ -57,7 +57,7 @@ else
   systemctl start docker
 fi
 usermod -a -G docker azureuser 2>&1 >> /var/log/agent-provision.log || true
-usermod -a -G docker AzDevOps 2>&1 >> /var/log/agent-provision.log || true
+usermod -a -G docker cloudtest 2>&1 >> /var/log/agent-provision.log || true
 cat /etc/passwd /etc/group >> /var/log/agent-provision.log || true
 
 # Install build tools (and waiting docker ready)
